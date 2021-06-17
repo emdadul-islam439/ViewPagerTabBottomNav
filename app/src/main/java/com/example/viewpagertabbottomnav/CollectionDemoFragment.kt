@@ -35,7 +35,6 @@ class CollectionDemoFragment : Fragment() {
 // Since this is an object collection, use a FragmentStatePagerAdapter,
 // and NOT a FragmentPagerAdapter.
 class DemoCollectionPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-
     override fun getCount(): Int  = 4
     override fun getItem(i: Int): Fragment {
         val fragment = DemoObjectFragment()
