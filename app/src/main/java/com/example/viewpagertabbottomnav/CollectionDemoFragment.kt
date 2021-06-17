@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class CollectionDemoFragment : Fragment() {
     // When requested, this adapter returns a DemoObjectFragment,
@@ -25,13 +27,18 @@ class CollectionDemoFragment : Fragment() {
         demoCollectionAdapter = DemoCollectionAdapter(this)
         viewPager = view.findViewById(R.id.pager)
         viewPager.adapter = demoCollectionAdapter
+
+        val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = "OBJECT ${(position + 1)}"
+        }.attach()
     }
 }
 
 // Since this is an object collection, use a FragmentStatePagerAdapter,
 // and NOT a FragmentPagerAdapter.
 class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
-    override fun getItemCount(): Int = 100
+    override fun getItemCount(): Int = 4
     override fun createFragment(position: Int): Fragment {
         // Return a NEW fragment instance in createFragment(int)
         val fragment = DemoObjectFragment()
