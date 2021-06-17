@@ -45,7 +45,6 @@ class DemoCollectionPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapte
         }
         return fragment
     }
-
     override fun getPageTitle(position: Int): CharSequence {
         return "OBJECT ${(position + 1)}"
     }
