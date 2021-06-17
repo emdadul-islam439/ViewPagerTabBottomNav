@@ -6,16 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 
 class CollectionDemoFragment : Fragment() {
     // When requested, this adapter returns a DemoObjectFragment,
     // representing an object in the collection.
-    private lateinit var demoCollectionPagerAdapter: DemoCollectionPagerAdapter
-    private lateinit var viewPager: ViewPager
+    private lateinit var demoCollectionAdapter: DemoCollectionAdapter
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -24,31 +22,24 @@ class CollectionDemoFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        demoCollectionPagerAdapter = DemoCollectionPagerAdapter(childFragmentManager)
+        demoCollectionAdapter = DemoCollectionAdapter(this)
         viewPager = view.findViewById(R.id.pager)
-        viewPager.adapter = demoCollectionPagerAdapter
-        val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
-        tabLayout.setupWithViewPager(viewPager)
+        viewPager.adapter = demoCollectionAdapter
     }
 }
 
 // Since this is an object collection, use a FragmentStatePagerAdapter,
 // and NOT a FragmentPagerAdapter.
-class DemoCollectionPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-
-    override fun getCount(): Int  = 4
-
-    override fun getItem(i: Int): Fragment {
+class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+    override fun getItemCount(): Int = 100
+    override fun createFragment(position: Int): Fragment {
+        // Return a NEW fragment instance in createFragment(int)
         val fragment = DemoObjectFragment()
         fragment.arguments = Bundle().apply {
             // Our object is just an integer :-P
-            putInt(ARG_OBJECT, i + 1)
+            putInt(ARG_OBJECT, position + 1)
         }
         return fragment
-    }
-
-    override fun getPageTitle(position: Int): CharSequence {
-        return "OBJECT ${(position + 1)}"
     }
 }
 
